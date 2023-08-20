@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/alekangelov/testament/database"
 	"github.com/alekangelov/testament/models"
 	"github.com/alekangelov/testament/router"
 	"github.com/gofiber/fiber/v2"
@@ -18,6 +19,10 @@ type Config struct {
 func main() {
 
 	err := godotenv.Load()
+
+	database.Connect()
+
+	database.Migrate()
 
 	config := Config{
 		Address: os.Getenv("ADDRESS"),

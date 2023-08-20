@@ -1,21 +1,24 @@
 package handler
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-type HealthCheckResponse struct {
-	Status string `json:"status"`
-	Ok     bool   `json:"ok"`
-	Now    int    `json:"now"`
-}
-
 func HealthCheck(c *fiber.Ctx) error {
-	return c.JSON(HealthCheckResponse{
-		Status: "OK",
-		Ok:     true,
-		Now:    int(time.Now().UTC().UnixMilli()),
+	queryValue, err := strconv.Atoi(c.Query("time"))
+	if err != nil {
+		queryValue = int(time.Now().UTC().UnixMilli())
+	}
+
+	now := int(time.Now().UTC().UnixMilli())
+
+	return c.JSON(fiber.Map{
+		"status": "ok",
+		"ok":     true,
+		"now":    now,
+		"diff":   now - queryValue,
 	})
 }
