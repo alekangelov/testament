@@ -4,7 +4,10 @@ import (
 	"log"
 	"os"
 
+	"github.com/alekangelov/testament/models"
+	"github.com/alekangelov/testament/router"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -13,15 +16,25 @@ type Config struct {
 }
 
 func main() {
+
 	err := godotenv.Load()
+
 	config := Config{
 		Address: os.Getenv("ADDRESS"),
 	}
 
-	app := fiber.New()
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World 👋!")
+	app := fiber.New(fiber.Config{
+		ErrorHandler: func(c *fiber.Ctx, err error) error {
+			return c.Status(fiber.StatusBadRequest).JSON(models.GlobalErrorHandlerResp{
+				Success: false,
+				Message: err.Error(),
+			})
+		},
 	})
+	app.Use(cors.New())
+
+	router.SetupRoutes(app)
+
 	err = app.Listen(config.Address)
 	log.Fatal(err)
 }
