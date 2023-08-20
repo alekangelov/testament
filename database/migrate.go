@@ -20,24 +20,23 @@ type RanMigration struct {
 	Name string
 }
 
-func getRanMigrations() []RanMigration {
+type RanMigrationMap map[int]RanMigration
+
+func getRanMigrations() RanMigrationMap {
 	sql := "SELECT id, name FROM migrations"
 	rows, err := Store.Conn().Query(context.Background(), sql)
 	if err != nil {
 		panic(err)
 	}
 	defer rows.Close()
-	var ran_migrations []RanMigration
+	var ran_migrations = make(RanMigrationMap)
 	for rows.Next() {
 		var ran_migration RanMigration
 		err := rows.Scan(&ran_migration.Id, &ran_migration.Name)
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf(
-			"Migration with id: %d has been ran \n", ran_migration.Id,
-		)
-		ran_migrations = append(ran_migrations, ran_migration)
+		ran_migrations[ran_migration.Id] = ran_migration
 	}
 
 	return ran_migrations
@@ -61,14 +60,9 @@ func getPendingMigrations() []Migration {
 		if err != nil {
 			id_int = 0
 		}
-		migration_exists := false
-		for _, ran_migration := range ran_migrations {
-			if ran_migration.Id == id_int {
-				migration_exists = true
-				break
-			}
-		}
-		if migration_exists {
+
+		if _, ok := ran_migrations[id_int]; ok {
+			fmt.Printf("Migration with id: %d has been ran \n", id_int)
 			continue
 		}
 
