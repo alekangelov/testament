@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -43,8 +44,11 @@ func getRanMigrations() RanMigrationMap {
 }
 
 func getPendingMigrations() []Migration {
+
 	ran_migrations := getRanMigrations()
+
 	var migrations []Migration
+
 	files, err := filepath.Glob("./migrations/*.sql")
 
 	if err != nil {
@@ -52,11 +56,17 @@ func getPendingMigrations() []Migration {
 	}
 
 	for _, file := range files {
+
 		name := filepath.Base(file)
+
 		name_without_extension := strings.Replace(name, ".sql", "", -1)
+
 		id_name := strings.Split(name_without_extension, "_")
+
 		id := id_name[0]
+
 		id_int, err := strconv.Atoi(id)
+
 		if err != nil {
 			id_int = 0
 		}
@@ -86,12 +96,21 @@ func getPendingMigrations() []Migration {
 func Migrate() {
 	migrations := getPendingMigrations()
 
+	if len(migrations) == 0 {
+		log.Println("No migrations to run")
+		return
+	}
+
 	for _, migration := range migrations {
+
 		fmt.Printf("Running migration %s\n", migration.Name)
+
 		file, err := os.ReadFile(migration.file)
+
 		if err != nil {
 			panic(err)
 		}
+
 		if _, err := Store.Conn().Exec(context.Background(), string(file)); err != nil {
 			panic(err)
 		}
@@ -100,6 +119,7 @@ func Migrate() {
 		if _, err := Store.Conn().Exec(context.Background(), "INSERT INTO migrations (id, name) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET id = EXCLUDED.id, name = EXCLUDED.name, updated_at = now()", migration.Id, migration.Name); err != nil {
 			panic(err)
 		}
+
 		fmt.Printf("Migration %s inserted successfully\n", migration.Name)
 
 	}
