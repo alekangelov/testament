@@ -59,3 +59,15 @@ func VerifyHandler(c *fiber.Ctx) error {
 		"message": "success",
 	})
 }
+
+func VerifyTokenHandler(c *fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"message": "success",
+	})
+}
+
+func RefreshTokenHandler(c *fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"message": "success",
+	})
+}
