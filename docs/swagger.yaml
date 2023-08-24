@@ -1,0 +1,204 @@
+basePath: /
+definitions:
+  models.GenericResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  models.LoginRequest:
+    properties:
+      email:
+        maxLength: 255
+        minLength: 3
+        type: string
+      password:
+        maxLength: 255
+        minLength: 3
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.LoginResponse:
+    properties:
+      refreshToken:
+        type: string
+      token:
+        type: string
+    type: object
+  models.RefreshTokenRequest:
+    properties:
+      token:
+        type: string
+    required:
+    - token
+    type: object
+  models.RegisterRequest:
+    properties:
+      email:
+        maxLength: 255
+        minLength: 3
+        type: string
+      password:
+        maxLength: 255
+        minLength: 3
+        type: string
+      passwordConfirmation:
+        type: string
+    required:
+    - email
+    - password
+    - passwordConfirmation
+    type: object
+  models.VerifyRequest:
+    properties:
+      code:
+        maxLength: 6
+        minLength: 6
+        type: string
+      type:
+        type: string
+    required:
+    - code
+    - type
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is the API for Testament
+  license:
+    name: MIT
+    url: /license.md
+  title: Testament API
+  version: "1.0"
+paths:
+  /auth/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login via email and password
+      parameters:
+      - description: Login
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+      summary: Login
+      tags:
+      - auth
+  /auth/v1/refresh-token:
+    post:
+      consumes:
+      - application/json
+      description: Refresh Token
+      parameters:
+      - description: RefreshToken
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+      security:
+      - Bearer: []
+      summary: Refresh Token
+      tags:
+      - auth
+  /auth/v1/register:
+    post:
+      consumes:
+      - application/json
+      description: Register via email and password
+      parameters:
+      - description: Register
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+      summary: Register
+      tags:
+      - auth
+  /auth/v1/verify:
+    post:
+      consumes:
+      - application/json
+      description: Verify some type of token
+      parameters:
+      - description: Verify
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.VerifyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+      summary: Verify
+      tags:
+      - auth
+  /auth/v1/verify-token:
+    get:
+      consumes:
+      - application/json
+      description: Verify Token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.GenericResponse'
+      security:
+      - Bearer: []
+      summary: Verify Token
+      tags:
+      - auth
+swagger: "2.0"

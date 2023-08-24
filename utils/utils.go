@@ -31,8 +31,6 @@ func BuildMessage(mail Mail) string {
 
 func SendMail(to []string, body string, subject string) error {
 	from := os.Getenv("EMAIL")
-	// pass := os.Getenv("EMAIL_PASSWORD")
-
 	smtpHost := os.Getenv("SMTP_HOST")
 	smtpPort := os.Getenv("SMTP_PORT")
 
@@ -45,7 +43,17 @@ func SendMail(to []string, body string, subject string) error {
 		}),
 	)
 
-	err := smtp.SendMail(smtpHost+":"+smtpPort, nil, from, to, message)
+	authType := os.Getenv("SMTP_AUTH_TYPE")
+	var auth smtp.Auth
+
+	if authType == "PLAIN" {
+		username := os.Getenv("SMTP_USERNAME")
+		password := os.Getenv("SMTP_PASSWORD")
+
+		auth = smtp.PlainAuth("", username, password, smtpHost)
+	}
+
+	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
 
 	if err != nil {
 		return err
@@ -68,7 +76,10 @@ func HashPassword(password string) string {
 		log.Fatal(err)
 	}
 	return string(bcryptPassword)
+}
 
+func ComparePassword(hashedPassword string, password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password)) == nil
 }
 
 var RUNES = []rune("0123456789")

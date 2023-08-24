@@ -13,14 +13,14 @@ type (
 
 var validate = validator.New()
 
-func (v *XValidator) Validate(i interface{}) []models.ErrorResponse {
-	validationErrors := []models.ErrorResponse{}
+func (v *XValidator) Validate(i interface{}) []models.Erred {
+	validationErrors := []models.Erred{}
 
 	err := v.Validator.Struct(i)
 
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
-			validationErrors = append(validationErrors, models.ErrorResponse{
+			validationErrors = append(validationErrors, models.Erred{
 				Error:       true,
 				FailedField: err.Field(),
 				Tag:         err.Tag(),
