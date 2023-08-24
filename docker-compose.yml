@@ -18,6 +18,13 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    volumes:
+      - ./mailhog:/var/lib/mailhog
 volumes:
   db:
     driver: local

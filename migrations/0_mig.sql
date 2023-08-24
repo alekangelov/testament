@@ -1,5 +1,3 @@
-
-
 CREATE TABLE IF NOT EXISTS public.migrations (
   id int NOT NULL,
   name character varying(255) NOT NULL,

@@ -9,21 +9,17 @@ CREATE OR REPLACE FUNCTION update_updated_at_column()
 $$ language 'plpgsql';
 
 
-CREATE TRIGGER update_migrations_modtime
-  BEFORE UPDATE on public.migrations
-  FOR EACH ROW EXECUTE PROCEDURE
-  update_updated_at_column();
-
 CREATE TABLE IF NOT EXISTS public.users
 (
-    id uuid NOT NULL,
-    email character varying(255) NOT NULL,
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    email character varying(255) NOT NULL UNIQUE,
     password character varying(255) NOT NULL,
     "SOCIAL_PROVIDER" character varying(255),
     "SOCIAL_ID" character varying(255),
     created_at timestamptz NOT NULL DEFAULT now(),
-    updated_at timestamptz DEFAULT now(),
-    CONSTRAINT users_pkey PRIMARY KEY (id)
+    updated_at timestamptz NOT NULL DEFAULT now(),
+    CONSTRAINT users_pkey PRIMARY KEY (id),
+    CONSTRAINT users_email_key UNIQUE (email)
 );
 
 CREATE TRIGGER update_users_modtime
@@ -34,12 +30,12 @@ CREATE TRIGGER update_users_modtime
 
 CREATE TABLE IF NOT EXISTS public.verifications
 (
-    id uuid NOT NULL,
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
     user_id uuid NOT NULL,
     type character varying(255) NOT NULL,
     code character varying(6) NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now(),
-    updated_at timestamptz DEFAULT now(),
+    updated_at timestamptz NOT NULL DEFAULT now(),
 
     CONSTRAINT primary_key_id PRIMARY KEY (id),
     CONSTRAINT foreign_key_user_verification FOREIGN KEY (user_id)

@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"github.com/go-playground/validator/v10"
 )
 
@@ -30,5 +32,24 @@ type (
 	GlobalErrorHandlerResp struct {
 		Success bool   `json:"success"`
 		Message string `json:"message"`
+	}
+
+	UserModel struct {
+		ID             string    `json:"id"`
+		Email          string    `json:"email"`
+		Password       string    `json:"password"`
+		SocialProvider *string   `json:"SOCIAL_PROVIDER"`
+		SocialId       *string   `json:"SOCIAL_ID"`
+		CreatedAt      time.Time `json:"created_at"`
+		UpdatedAt      time.Time `json:"updated_at"`
+	}
+
+	VerificationModel struct {
+		ID        string    `json:"id"`
+		UserId    string    `json:"user_id"`
+		Type      string    `json:"type"`
+		Code      string    `json:"code"`
+		CreatedAt time.Time `json:"created_at"`
+		UpdatedAt time.Time `json:"updated_at"`
 	}
 )

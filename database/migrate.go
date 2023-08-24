@@ -27,7 +27,7 @@ func getRanMigrations() RanMigrationMap {
 	sql := "SELECT id, name FROM migrations"
 	rows, err := Store.Conn().Query(context.Background(), sql)
 	if err != nil {
-		panic(err)
+		return make(RanMigrationMap)
 	}
 	defer rows.Close()
 	var ran_migrations = make(RanMigrationMap)
@@ -52,7 +52,8 @@ func getPendingMigrations() []Migration {
 	files, err := filepath.Glob("./migrations/*.sql")
 
 	if err != nil {
-		panic(`Error getting migrations`)
+		log.Printf("Error getting migrations: %v", err)
+		panic(err)
 	}
 
 	for _, file := range files {
@@ -108,15 +109,18 @@ func Migrate() {
 		file, err := os.ReadFile(migration.file)
 
 		if err != nil {
+			log.Println("1")
 			panic(err)
 		}
 
 		if _, err := Store.Conn().Exec(context.Background(), string(file)); err != nil {
+			log.Println("2")
 			panic(err)
 		}
 
 		fmt.Printf("Migration %s ran successfully\n", migration.Name)
 		if _, err := Store.Conn().Exec(context.Background(), "INSERT INTO migrations (id, name) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET id = EXCLUDED.id, name = EXCLUDED.name, updated_at = now()", migration.Id, migration.Name); err != nil {
+			log.Println("3")
 			panic(err)
 		}
 
