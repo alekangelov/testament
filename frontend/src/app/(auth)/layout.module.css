@@ -1,0 +1,19 @@
+.wrapper {
+  width: 512px;
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: rgb(var(--surface-rgb));
+  border-radius: 0.5rem;
+  box-shadow: 0 2rem 3rem -1rem rgba(var(--shadow-rgb), 0.1);
+  min-height: 512px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 100vw;
+  min-height: 100vh;
+}

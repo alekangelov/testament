@@ -1,0 +1,42 @@
+.wrapper {
+  width: 100%;
+}
+
+.container {
+  position: relative;
+}
+
+.label {
+  position: absolute;
+  top: 0rem;
+  left: 1.5rem;
+  background-color: rgba(var(--surface-rgb), 1);
+  z-index: 2;
+  font-size: 12px;
+  letter-spacing: -.3px;
+  font-weight: 600;
+  padding: 0rem .5rem;
+  transition: var(--transition) transform;
+  transform: translate(0px, -50%) scale(1);
+
+}
+
+.input {
+  appearance: none;
+  outline: none;
+  padding: 1rem 2rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(var(--foreground-rgb), 0.2);
+  background-color: rgba(var(--surface-rgb), 1);
+  transition: var(--transition) border;
+}
+
+.input:focus {
+  border-color: rgba(var(--foreground-rgb), 1);
+}
+
+
+.wrapper + .wrapper {
+  padding-top: 2rem;
+}

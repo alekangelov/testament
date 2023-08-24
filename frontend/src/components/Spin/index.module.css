@@ -1,0 +1,27 @@
+.loader {
+  width: var(--size, 18px);
+  height: var(--size, 18px);
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 3px solid rgba(var(--color, var(--foreground-rgb)), 1);
+  border-right: 3px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}

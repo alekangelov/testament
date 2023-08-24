@@ -1,0 +1,80 @@
+.wrapper {
+  width: 100%;
+  position: relative;
+  background: rgba(var(--foreground-rgb), 0.8);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: none;
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(var(--surface-rgb), 1);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.wrapper:hover {
+  background: rgba(var(--foreground-rgb), 1);
+  color: rgba(var(--surface-rgb), 1);
+}
+
+.wrapper:active {
+  background: rgba(var(--foreground-rgb), 0.8);
+  color: rgba(var(--surface-rgb), 1);
+  transition: 0s;
+}
+
+.bordered {
+  background-color: transparent;
+  border: 1px solid rgba(var(--foreground-rgb), 0.2);
+  color: rgba(var(--foreground-rgb), 1);
+}
+
+.bordered:hover {
+  background-color: rgba(var(--foreground-rgb), 0.05);
+  border: 1px solid rgba(var(--foreground-rgb), 0.5);
+  color: rgba(var(--foreground-rgb), 1);
+}
+
+.sm {
+  padding: 0.75rem 1rem;
+  font-size: 12px;
+}
+
+.lg {
+  padding: 1.5rem 2rem;
+  font-size: 16px;
+}
+
+.md {
+  padding: 1rem 2rem;
+  font-size: 14px;
+}
+
+.loader {
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--transition);
+}
+
+.children {
+  opacity: 0;
+  transition: opacity var(--transition);
+  width: 100%;
+  height: 100%;
+}
+
+.open {
+  opacity: 1;
+}
+
+.wrapper[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5
+}

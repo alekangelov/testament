@@ -14,10 +14,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type Config struct {
-	Address string `default: "localhost:8080"`
-}
-
 //	@title			Testament API
 //	@version		1.0
 //	@description	This is the API for Testament
@@ -36,8 +32,9 @@ func main() {
 
 	database.Migrate()
 
-	config := Config{
-		Address: os.Getenv("ADDRESS"),
+	address := os.Getenv("ADDRESS")
+	if address == "" {
+		address = ":8080"
 	}
 
 	app := fiber.New(fiber.Config{
@@ -55,7 +52,14 @@ func main() {
 		},
 	})
 
-	app.Use(cors.New())
+	app.Use(cors.New(
+		cors.Config{
+			AllowOrigins:     "*",
+			AllowHeaders:     "*",
+			AllowMethods:     "*",
+			AllowCredentials: true,
+		},
+	))
 	app.Get("/swagger/*", swagger.HandlerDefault)
 	app.Get("/license", func(c *fiber.Ctx) error {
 		return c.SendFile("./license.md")
@@ -63,6 +67,6 @@ func main() {
 
 	router.SetupRoutes(app)
 
-	err = app.Listen(config.Address)
+	err = app.Listen(address)
 	log.Fatal(err)
 }

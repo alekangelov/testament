@@ -75,4 +75,9 @@ type (
 	CountModel struct {
 		Count int `json:"count"`
 	}
+
+	SettingsResponse struct {
+		Title       string `json:"title"`
+		Description string `json:"description"`
+	}
 )

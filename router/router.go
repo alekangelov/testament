@@ -19,4 +19,7 @@ func SetupRoutes(app *fiber.App) {
 	auth.Post("/verify", handler.VerifyHandler)
 	auth.Get("/verify-token", handler.VerifyTokenHandler)
 	auth.Post("/refresh-token", handler.RefreshTokenHandler)
+
+	settings := api.Group("v1/settings")
+	settings.Get("/", handler.SettingsHandler)
 }
