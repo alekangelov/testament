@@ -4,15 +4,12 @@ import { Facebook, Google, Apple } from "@components/Icons";
 import { createResource } from "solid-js";
 import { getSettings } from "@data/settings";
 
-const SIZE = 24;
-
 export default function SocialLogin({
   onClick,
 }: {
   onClick?: (type: "google" | "facebook" | "apple") => void;
 }) {
   const [settings] = createResource(getSettings);
-  console.log(settings());
   return (settings()?.socials?.length ?? 0) === 0 ? (
     <div />
   ) : (

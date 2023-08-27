@@ -1,0 +1,17 @@
+.main {
+  margin-top: 1rem;
+
+}
+
+.form {
+  margin-top: 2rem;
+}
+
+.footer {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-flow: column;
+}

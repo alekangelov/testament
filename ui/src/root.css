@@ -32,7 +32,6 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  transition: var(--transition);
   font-size: 14px;
   letter-spacing: -.3px;
 }
