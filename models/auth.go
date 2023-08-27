@@ -77,7 +77,16 @@ type (
 	}
 
 	SettingsResponse struct {
-		Title       string `json:"title"`
-		Description string `json:"description"`
+		Title       string   `json:"title"`
+		Description string   `json:"description"`
+		Logo        string   `json:"logo"`
+		Socials     []string `json:"socials"`
+		Colors      struct {
+			Primary string `json:"primary"`
+			Success string `json:"success"`
+			Warning string `json:"warning"`
+			Info    string `json:"info"`
+			Error   string `json:"error"`
+		} `json:"colors"`
 	}
 )

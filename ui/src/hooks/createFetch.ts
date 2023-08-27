@@ -1,10 +1,5 @@
-import { Accessor, createResource, createSignal, onMount } from "solid-js";
-
-const delay = (ms: number) => {
-  if (ms <= 0) return;
-  if (import.meta.env.PROD === true) return;
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
+import delay from "@utils/delay";
+import { Accessor, createSignal, onMount } from "solid-js";
 
 export default function createRequest<T, X>(
   url: string,
@@ -32,7 +27,7 @@ export default function createRequest<T, X>(
     async (variables: X) => {
       const path = import.meta.env.VITE_API_URL + url;
       setLoading(true);
-      await delay(5000);
+      await delay(500);
       try {
         abort.abort();
         abort = new AbortController();

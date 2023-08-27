@@ -12,7 +12,7 @@ export interface Notification {
 }
 
 interface Toaster {
-  notifications: Record<number, Notification>;
+  notifications: Notification[];
   add: (notification: Partial<Notification>) => VoidFunction;
   remove: (id: number) => void;
   clear: () => void;
@@ -20,18 +20,22 @@ interface Toaster {
   setState: (id: number, state: Notification["state"]) => void;
 }
 
-const [toasts, setToasts] = createStore({} as Record<number, Notification>);
+const [toasts, setToasts] = createStore([] as Notification[]);
+
+const selector =
+  <T extends { id: number }>(id: number) =>
+  (x: T) =>
+    x.id === id;
 
 export const useToaster = (): Toaster => {
   const notifications: Toaster["notifications"] = toasts;
   const deleteToast = (id: number) => {
     setToasts((prev) => {
-      const { [id]: _, ...rest } = prev;
-      return rest;
+      return prev.filter((x) => x.id !== id);
     });
   };
   const setHeight: Toaster["setHeight"] = (id, height) => {
-    setToasts(id, "height", height);
+    setToasts(selector(id), "height", height);
   };
   const clear: Toaster["clear"] = () => {
     const ids = Object.keys(toasts).map((id) => parseInt(id));
@@ -40,7 +44,7 @@ export const useToaster = (): Toaster => {
     }
   };
   const setState: Toaster["setState"] = (id, state) => {
-    setToasts(id, "state", state);
+    setToasts(selector(id), "state", state);
   };
   const remove: Toaster["remove"] = (id) => {
     setState(id, "exiting");
@@ -60,10 +64,7 @@ export const useToaster = (): Toaster => {
       duration: notification.duration ?? 3000,
     } as const;
     setToasts((prev) => {
-      return {
-        ...prev,
-        [id]: x,
-      };
+      return [...prev, x];
     });
     setTimeout(() => {
       setState(id, "in");

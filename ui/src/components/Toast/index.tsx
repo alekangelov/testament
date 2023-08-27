@@ -53,6 +53,7 @@ const Toast = ({
 
   return (
     <div
+      data-toast-id={notification().id}
       class={clsx(s.toast, s[notification().state])}
       style={
         {
@@ -105,7 +106,7 @@ export default function ToastContainer() {
   const { notifications } = useToaster();
   return (
     <div class={s.container}>
-      <For each={[...Object.values(notifications)].reverse()}>
+      <For each={[...notifications].reverse()}>
         {(notification) => {
           return <Toast notification={() => notification} />;
         }}

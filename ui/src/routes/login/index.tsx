@@ -24,20 +24,15 @@ export default function Index() {
   return (
     <ModalLayout>
       <main class={styles.main}>
-        <h3>Login</h3>
+        <h3 style={{ margin: 0 }}>Login</h3>
         <form
           class={styles.form}
           onSubmit={async (e) => {
             e.preventDefault();
-            toast({
-              title: "Oops, there's something wrong",
-              message: "An error occurred",
-              type: "error",
-            });
-            return;
             const data = new FormData(e.target as HTMLFormElement);
             const email = `${data.get("email")}`;
             const password = `${data.get("password")}`;
+
             if (!email || !password)
               return toast({
                 title: "Error",
@@ -57,10 +52,15 @@ export default function Index() {
                 message: "We're logging you in now, sit tight",
                 type: "success",
               });
-              const urlargs = (
-                callback ? [callback] : ["/callback", window.location.origin]
-              ) as [string, string | undefined];
-              const url = new URL(...urlargs);
+              if (!callback) {
+                return toast({
+                  title: "We don't know what to do",
+                  message:
+                    "We don't know where to send you, so we're sending you nowhere",
+                  type: "warning",
+                });
+              }
+              const url = new URL(callback);
               url.searchParams.set("token", token);
               url.searchParams.set("refreshToken", refreshToken);
               window.location.href = url.href;
