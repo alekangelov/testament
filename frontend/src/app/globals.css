@@ -4,6 +4,10 @@
   --background-start-rgb: 250,250,250;
   --background-end-rgb: 225, 225, 225;
   --easing: cubic-bezier(0, .5, .5, 1);
+  --info-rgb: 0,110,255;
+  --success-rgb: 89 183 91;
+  --warning-rgb: 223 164 0;
+  --error-rgb: 255,0,75;
   --transition: .5s var(--easing);
   --shadow-rgb: 0,0,0;
 }
@@ -69,4 +73,16 @@ a {
 
 a:hover {
   opacity: 1;
+}
+
+code {
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  background: rgba(var(--foreground-rgb), 0.05);
+  border-radius: 4px;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  display: block;
+  padding: 1rem;
+  border-radius: 8px;
 }

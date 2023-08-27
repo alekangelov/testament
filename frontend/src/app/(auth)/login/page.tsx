@@ -4,6 +4,8 @@ import styles from "./page.module.css";
 import Button from "@components/Button";
 import SocialLogin from "@components/Social";
 import { usePost } from "@hooks/useFetch";
+import { useSearchParams } from "next/navigation";
+import { useToaster } from "@hooks/useToaster";
 
 export default function Index() {
   const [login, { loading }] = usePost<
@@ -16,17 +18,48 @@ export default function Index() {
       password: string;
     }
   >("/api/auth/login");
+  const params = useSearchParams();
+  const toast = useToaster((s) => s.add);
+  const callback = params.get("callback") as string;
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     "use client";
     e.preventDefault();
     const data = new FormData(e.target as HTMLFormElement);
     const email = `${data.get("email")}`;
     const password = `${data.get("password")}`;
-    if (!email || !password) return console.error("Missing email or password");
-    const { token, refreshToken } = await login({
-      email,
-      password,
-    });
+    if (!email || !password)
+      return toast({
+        title: "Error",
+        message: "No email or password provided",
+        type: "error",
+      });
+    try {
+      const { token, refreshToken } = await login({
+        email,
+        password,
+      });
+      if (!token || !refreshToken) {
+        throw new Error("There was an error logging you in");
+      }
+      toast({
+        title: "You're in!",
+        message: "We're logging you in now, sit tight",
+        type: "success",
+      });
+      const urlargs = (
+        callback ? [callback] : ["/callback", window.location.origin]
+      ) as [string, string | undefined];
+      const url = new URL(...urlargs);
+      url.searchParams.set("token", token);
+      url.searchParams.set("refreshToken", refreshToken);
+      window.location.href = url.href;
+    } catch (e: any) {
+      toast({
+        title: "Oops, there's something wrong",
+        message: e?.message || "An error occurred",
+        type: "error",
+      });
+    }
   }
   console.log({ loading });
   return (

@@ -1,0 +1,87 @@
+.container {
+  position: absolute;
+  padding-top: 1rem;
+  top: 0%;
+  left: 50%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-flow: column;
+  align-items: center;
+  z-index: 100;
+  transform: translate(-50%, 0%);
+  max-width: 90%;
+  user-select: none;
+}
+
+.toast {
+  max-height: var(--maxheight, 0px);
+  transition: max-height var(--transition), opacity var(--transition);
+  max-width: 100%;
+}
+
+.toastInner {
+  background: rgba(var(--surface-rgb), 1);
+  padding: 1rem;
+  box-shadow: 0px 1rem 2rem -1rem rgba(var(--foreground-rgb), 0.1);
+  border-radius: 4px;
+  width: 400px;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.message {
+  display: flex;
+  flex: 1;
+  flex-flow: column;
+}
+
+.title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 16px;
+  color: rgba(var(--foreground-rgb), 1);
+  margin-bottom: .5rem;
+}
+
+.infobox {
+  background-color: var(--background);
+  border-radius: 100%;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 1rem;
+}
+
+.entering {
+  opacity: 0;
+}
+
+.in {
+  opacity: 1;
+}
+
+.exiting {
+  max-height: 0px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.close {
+  margin-left: auto;
+  cursor: pointer;
+  transition: var(--transition);
+  background-color: none;
+  border: none;
+  color: rgba(var(--foreground-rgb), 1);
+  background-color: rgba(var(--foreground-rgb), 0);
+  display: flex;
+  padding: 0.2rem;
+  border-radius: .2rem;
+}
+
+.close:hover {
+  background-color: rgba(var(--foreground-rgb), 0.1);
+}

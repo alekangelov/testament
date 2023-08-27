@@ -70,7 +70,7 @@ export function usePost<T, X>(
     useCallback(
       async (variables: X) => {
         setLoading(true);
-        await delay(2000);
+        await delay(500);
         try {
           abort.current.abort();
           abort.current = new AbortController();
@@ -82,13 +82,13 @@ export function usePost<T, X>(
             },
             body: JSON.stringify(variables),
           });
+          if (!res.ok) throw await res.json();
           const json = await res.json();
           setData(json);
           setLoading(false);
           return json;
         } catch (err: any) {
           const error = new Error(err?.message ?? "An error occurred!");
-          await delay(2000);
           setLoading(false);
           setError(error);
           throw error;

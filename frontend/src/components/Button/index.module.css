@@ -14,11 +14,14 @@
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
+  transform: translate(0, 0);
 }
 
 .wrapper:hover {
   background: rgba(var(--foreground-rgb), 1);
   color: rgba(var(--surface-rgb), 1);
+  transform: translate(0, -2px);
+  box-shadow: 0px 1rem 2rem -1rem rgba(var(--shadow-rgb), 0.2);
 }
 
 .wrapper:active {
@@ -76,5 +79,5 @@
 
 .wrapper[disabled] {
   cursor: not-allowed;
-  opacity: 0.5
+  opacity: 0.5;
 }
