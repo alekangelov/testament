@@ -60,6 +60,7 @@ func main() {
 			AllowCredentials: true,
 		},
 	))
+
 	app.Get("/swagger/*", swagger.HandlerDefault)
 	app.Get("/license", func(c *fiber.Ctx) error {
 		return c.SendFile("./license.md")
